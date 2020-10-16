@@ -1,6 +1,6 @@
 {
   "name": "js-template-builder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Provide a set of tools to build a report with a customizable templating language. Similar to Excel or Microsoft SQL Report Builder. Provided a XML/HTML Template and a Model Definition (The structure of the input data) and the Model (the input data), the package outputs an executed XML/HTML file.",
   "main": "dist/index.js",
   "scripts": {
