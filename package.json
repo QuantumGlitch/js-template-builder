@@ -15,5 +15,16 @@
   "devDependencies": {
     "webpack": "^5.0.0",
     "webpack-cli": "^4.0.0"
-  }
+  },
+  "keywords": [
+    "js",
+    "template",
+    "report",
+    "builder",
+    "compiler",
+    "compile",
+    "customizable",
+    "user",
+    "editable"
+  ]
 }
