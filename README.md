@@ -285,14 +285,14 @@ You can add a custom function through the following API:
 const { Functions, DataType } = require('report-builder');
 
 // Function that returns primitives
-Functions.add({
+Functions.add('operation', {
   function: (param1, param2, param3) => (param1 * param2) % param3,
   returns: DataType.Primitive,
 });
 
 // Function that returns complexs
 // Ex: Merge two objects
-Functions.add({
+Functions.add('merge', {
   function: (param1, param2) => {
     const obj = {};
     for (const prop in param1) obj[prop] = param1[prop];
