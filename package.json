@@ -26,5 +26,13 @@
     "customizable",
     "user",
     "editable"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuantumGlitch/js-template-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/QuantumGlitch/js-template-builder/issues"
+  },
+  "homepage": "https://github.com/QuantumGlitch/js-template-builder#readme"
 }
