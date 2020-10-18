@@ -207,7 +207,7 @@ const GlobalRegex = {
   },
   Identifier: {
     Name: '([$A-Za-z_][0-9A-Za-z_$]*)',
-    Path: '(([$A-Za-z_][0-9A-Za-z_$]*)(\\.[$A-Za-z_][0-9A-Za-z_$]*)*)',
+    Path: '(([$A-Za-z_][0-9A-Za-z_$]*)(\\.[0-9A-Za-z_$]*)*)',
   },
   Function: {
     Identifier: '[0-9A-Za-z\\_\\>\\<\\^\\|?\\!\\&\\$\\-\\+\\=\\.]+',

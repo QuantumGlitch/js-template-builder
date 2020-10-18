@@ -73,6 +73,10 @@ Renderer.parseFromXml(
   /*html*/ `
   <any>
     <any class="data-declaration">sellings = Array.filterByProperty(reportData.sellings, "quantity", ">", 0)</any>            
+    <any class="data-declaration">firstSelling = sellings.0</any>
+    <h1>
+      <any class="data-expression">firstSelling.id</any>
+    </h1>
     <any class="data-context">
       <any class="data-control-expression">
           @foreach selling of sellings

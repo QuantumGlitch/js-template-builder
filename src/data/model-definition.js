@@ -25,8 +25,8 @@ class ModelNodeDefinition {
   constructor({ name, description = null, type, props = null }) {
     this.name = name;
     this.description = description;
-    this._type = type;
-    this._props = props;
+    this.type = type;
+    this.props = props;
 
     /**
      * This will be available after model bind
@@ -39,7 +39,7 @@ class ModelNodeDefinition {
     this.value = v;
 
     // Sub bind
-    if (this.type === 'Object' && typeof v === 'object' && v)
+    if (this.type === DataType.Object && typeof v === 'object' && v)
       this.props.forEach((p) => p.bind(v[p.name]));
   }
 
@@ -80,18 +80,30 @@ class ModelNodeDefinition {
    * @returns {ModelNodeDefinition}
    */
   getByPath(path) {
-    let node = this;
-
-    for (let i = 0; i < path.length; i++) {
-      node = node.props.find((v) => v.name === path[i]);
-      if (!node) break;
-    }
-
-    return node;
+    return ModelNodeDefinition.getByPath(this, path);
   }
 
   static getByPath(node, path) {
     for (let i = 0; i < path.length; i++) {
+      // The current path is an integer (this is available only for arrays)
+      if (!isNaN(parseInt(path[i]))) {
+        if (node.type === DataType.Array) {
+          const newNode = new ModelNodeDefinition({
+            name: path[i],
+            description: `Element of '${node.description}'`,
+            type: node.props ? DataType.Object : DataType.Primitive,
+            props: node.props,
+          });
+
+          // Already bound a value
+          if (node.value) newNode.bind(node.value[Number(path[i])]);
+
+          // Element of an array
+          node = newNode;
+          continue;
+        } else break;
+      }
+
       node = node.props.find((v) => v.name === path[i]);
       if (!node) break;
     }
