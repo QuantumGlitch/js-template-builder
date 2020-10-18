@@ -111,6 +111,7 @@ const Functions = {
   // Array arithmetics functions
   'Array.sum': {
     function(array, property) {
+      if(!array) return null;
       if (property) return Functions.sum.function(...array.map((e) => e[property]));
       return Functions.sum.function(...array);
     },
@@ -118,6 +119,7 @@ const Functions = {
   },
   'Array.sub': {
     function(array, property) {
+      if(!array) return null;
       if (property) return Functions.subtract.function(...array.map((e) => e[property]));
       return Functions.subtract.function(...array);
     },
@@ -125,6 +127,7 @@ const Functions = {
   },
   'Array.mul': {
     function(array, property) {
+      if(!array) return null;
       if (property) return Functions.multiply.function(...array.map((e) => e[property]));
       return Functions.multiply.function(...array);
     },
@@ -132,6 +135,7 @@ const Functions = {
   },
   'Array.div': {
     function(array, property) {
+      if(!array) return null;
       if (property) return Functions.divide.function(...array.map((e) => e[property]));
       return Functions.divide.function(...array);
     },
@@ -139,6 +143,9 @@ const Functions = {
   },
   'Array.weightedSum': {
     function(...arrays) {
+      for(const arr of arrays)
+        if(!arr) return null;
+
       let sum = 0;
       for (let i = 0; i < arrays[0].length; i++) {
         // Multiply all i-th element of arrays
@@ -152,7 +159,7 @@ const Functions = {
   // Map an array
   'Array.mapByProperty': {
     function(array, property) {
-      return array.map((e) => Functions.getProperty(e, property));
+      return array ? array.map((e) => Functions.getProperty(e, property)) : null;
     },
     returns: ([arrayType], [_, propertyValue]) => ({
       type: DataType.Array,
@@ -164,6 +171,7 @@ const Functions = {
     function(array, property, func, ...params) {
       const myFunc = Functions.get(func);
       if (!myFunc) throw new Error(`Can't find the function called '${func}'`);
+      if(!array) return null;
       return array.filter((e) => myFunc(Functions.getProperty(e, property), ...params));
     },
     returns: ([arrayType], [_, propertyValue], [__, functionName]) => ({
