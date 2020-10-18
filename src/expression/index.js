@@ -164,7 +164,7 @@ const Functions = {
     returns: ([arrayType], [_, propertyValue]) => ({
       type: DataType.Array,
       props: ModelNodeDefinition.getByPath(arrayType.props, propertyValue),
-      description: `Mapped array by property ${propertyValue}`,
+      description: `Mapped array << ${arrayType.description} >> by property ${propertyValue}`,
     }),
   },
   'Array.filterByProperty': {
@@ -177,7 +177,7 @@ const Functions = {
     returns: ([arrayType], [_, propertyValue], [__, functionName]) => ({
       type: DataType.Array,
       props: arrayType.props,
-      description: `Filtered array by property '${propertyValue}' with function '${functionName}'`,
+      description: `Filtered array << ${arrayType.description} >> by property '${propertyValue}' with function '${functionName}'`,
     }),
   },
 };
