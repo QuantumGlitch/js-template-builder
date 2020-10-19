@@ -111,7 +111,7 @@ const Functions = {
   // Array arithmetics functions
   'Array.sum': {
     function(array, property) {
-      if(!array) return null;
+      if (!array) return null;
       if (property) return Functions.sum.function(...array.map((e) => e[property]));
       return Functions.sum.function(...array);
     },
@@ -119,7 +119,7 @@ const Functions = {
   },
   'Array.sub': {
     function(array, property) {
-      if(!array) return null;
+      if (!array) return null;
       if (property) return Functions.subtract.function(...array.map((e) => e[property]));
       return Functions.subtract.function(...array);
     },
@@ -127,7 +127,7 @@ const Functions = {
   },
   'Array.mul': {
     function(array, property) {
-      if(!array) return null;
+      if (!array) return null;
       if (property) return Functions.multiply.function(...array.map((e) => e[property]));
       return Functions.multiply.function(...array);
     },
@@ -135,7 +135,7 @@ const Functions = {
   },
   'Array.div': {
     function(array, property) {
-      if(!array) return null;
+      if (!array) return null;
       if (property) return Functions.divide.function(...array.map((e) => e[property]));
       return Functions.divide.function(...array);
     },
@@ -143,8 +143,7 @@ const Functions = {
   },
   'Array.weightedSum': {
     function(...arrays) {
-      for(const arr of arrays)
-        if(!arr) return null;
+      for (const arr of arrays) if (!arr) return null;
 
       let sum = 0;
       for (let i = 0; i < arrays[0].length; i++) {
@@ -163,7 +162,7 @@ const Functions = {
     },
     returns: ([arrayType], [_, propertyValue]) => ({
       type: DataType.Array,
-      props: ModelNodeDefinition.getByPath(arrayType.props, propertyValue),
+      props: ModelNodeDefinition.getByPath(arrayType, propertyValue),
       description: `Mapped array << ${arrayType.description} >> by property ${propertyValue}`,
     }),
   },
@@ -171,7 +170,7 @@ const Functions = {
     function(array, property, func, ...params) {
       const myFunc = Functions.get(func);
       if (!myFunc) throw new Error(`Can't find the function called '${func}'`);
-      if(!array) return null;
+      if (!array) return null;
       return array.filter((e) => myFunc(Functions.getProperty(e, property), ...params));
     },
     returns: ([arrayType], [_, propertyValue], [__, functionName]) => ({
@@ -261,6 +260,7 @@ class Expression {
       this.type = Type.StaticValue;
       // Replace escaped quotes with quotes
       this.staticValue = match[1].replace('\\"', '"');
+      this.description = `Static << ${this.staticValue} >>`;
     }
     // This expression can be validated without semantic
     // e.g. 120, 0.9, 0.0024
@@ -269,12 +269,14 @@ class Expression {
       this.type = Type.StaticValue;
       // Replace escaped quotes with quotes
       this.staticValue = Number(this.match[1]);
+      this.description = `Static << ${this.staticValue} >>`;
     }
     // The simplest value expression, a variable's path
     // variable_x.property....finalProp
     else if ((match = this.value.match(new RegExp(`^\\s*${GlobalRegex.Identifier.Path}\\s*$`)))) {
       this.match = match;
       this.type = Type.VariableValue;
+      this.description = `Variable << ${this.match[1]} >>`;
     }
     // Function call
     // functionName(param1, param2, args...)
@@ -311,6 +313,7 @@ class Expression {
           // Function's name is valid
           const functionParameters = [];
 
+          // Extract parameters
           let parenthesis = 0;
           let currentParam = '';
           for (let i = 0; i < this.match[2].length; i++) {
@@ -350,6 +353,11 @@ class Expression {
 
           this.functionName = functionName;
           this.parameters = parameters;
+
+          const dataType = this.deduceDataType();
+          this.description = `Function ${functionName}'s call with parameters ( 
+              ${functionParameters.join(',\n             ')} 
+) that returns << ${dataType.description} >>`;
         } else {
           this.error = `Can't find the function '${functionName}'`;
           return false;
@@ -379,6 +387,8 @@ class Expression {
         declaredVariable.value = valueExpression.evaluate();
 
         context.variables.push(declaredVariable);
+
+        this.description = `Declaration of variable << ${declaredVariable.name} >>, value assigned to: << ${dataType.description} >>`;
 
         break;
     }
