@@ -5,7 +5,7 @@ Provided a XML/HTML Template and a Model Definition (The structure of the input 
 
 # Purpose
 
-This is meant to be used as a support for the end user who wants to modify the reports or views generated through the package. For example this is useful with CKEditor that provide an HTML Editor.
+This is meant to be used as a support for the end user who wants to modify the reports or views generated through the package. For example this is useful with CKEditor that provide an HTML Editor (see also [ckeditor5-template-builder](https://github.com/QuantumGlitch/ckeditor5-template-builder-example#readme)).
 
 # Install
 
