@@ -10,7 +10,7 @@ This is meant to be used as a support for the end user who wants to modify the r
 # Install
 
 ```shell
-npm i report-builder
+npm i js-template-builder
 ```
 
 # Usage
